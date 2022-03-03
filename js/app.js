@@ -1,19 +1,37 @@
+const errorContainer = document.getElementById('error-message');
+const mealDetailContainer = document.getElementById('meal-detail');
+const loaderContainer = document.getElementById('loader');
+
+// Loader Function:
+const loader = displayStyle => {
+        loaderContainer.style.display = displayStyle;
+}
+loader('none');
 // Search Food:
 const searchFood = () => {
+        loader('block');
         const searchField = document.getElementById('search-field');
         const searchValue = searchField.value;
-        const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`;
-
-        // Fetch Data from API:
-        fetch(url)
-                .then(res => res.json())
-                .then(data => displayMeals(data.meals));
+        if (searchValue.length === 0) {
+                const p = document.createElement('p');
+                p.classList.add('text-center');
+                p.classList.add('text-danger');
+                p.classList.add('fw-bold');
+                p.innerText = "Please write something!";
+                errorContainer.appendChild(p);
+        }
+        else {
+                const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`;
+                // Fetch Data from API:
+                fetch(url)
+                        .then(res => res.json())
+                        .then(data => displayMeals(data.meals));
+        }
 }
 
 // Display Meal:
 const displayMeals = meals => {
         const mealContainer = document.getElementById('meal-container');
-        const errorContainer = document.getElementById('error-message')
 
         // Clear Value:
         mealContainer.textContent = '';
@@ -31,22 +49,22 @@ const displayMeals = meals => {
                 meals.forEach(meal => {
                         const div = document.createElement('div');
                         div.classList.add('col');
+                        div.classList.add('p-4');
                         div.innerHTML = `
                                 <div onclick="loadMealDetail(${meal.idMeal})" class="card">
                                         <div class="p-5">
                                                 <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
                                         </div>
                                         <div class="card-body">
-                                                <h5 class="card-title">Card title</h5>
-                                                <p class="card-text">This is a longer card with supporting text
-                                                        below as a natural lead-in to additional content. This
-                                                        content is a little bit longer.</p>
+                                                <h5 class="card-title">${meal.strMeal}</h5>
+                                                <p class="card-text">${meal.strInstructions.slice(0, 150)}</p>
                                         </div>
                                 </div>
                         `;
                         mealContainer.appendChild(div);
                 })
         }
+        loader('none');
 }
 
 // Display Meal Detail:
@@ -57,8 +75,7 @@ const loadMealDetail = meal => {
 }
 
 const displayMealDetail = (meal) => {
-        console.log(meal)
-        const mealDetailContainer = document.getElementById('meal-detail');
+        mealDetailContainer.textContent = '';
         const div = document.createElement('div');
         div.classList.add('card');
         div.innerHTML = `

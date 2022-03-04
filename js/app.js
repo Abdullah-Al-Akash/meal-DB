@@ -1,5 +1,6 @@
 const errorContainer = document.getElementById('error-message');
 const mealDetailContainer = document.getElementById('meal-detail');
+// Loader Container:
 const loaderContainer = document.getElementById('loader');
 
 // Loader Function:

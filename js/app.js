@@ -68,13 +68,14 @@ const displayMeals = meals => {
         loader('none');
 }
 
-// Display Meal Detail:
+// Load Detail Function:
 const loadMealDetail = meal => {
         fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal}`)
                 .then(res => res.json())
                 .then(data => displayMealDetail(data.meals[0]))
 }
 
+// Display Meal Detail:
 const displayMealDetail = (meal) => {
         mealDetailContainer.textContent = '';
         const div = document.createElement('div');

@@ -8,7 +8,7 @@ const loader = displayStyle => {
         loaderContainer.style.display = displayStyle;
 }
 loader('none');
-// Search Food:
+
 const searchFood = () => {
         loader('block');
         const searchField = document.getElementById('search-field');
